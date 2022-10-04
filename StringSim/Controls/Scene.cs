@@ -93,12 +93,19 @@ namespace StringSim.Controls
             int cx = Width / 2;
             int cy = Height / 2;
 
+            foreach(var s in Context.Segments)
+            {
+                var p1 = s.Heads[0].CurrentValue;
+                var p2 = s.Heads[1].CurrentValue;
+                g.DrawLine(Pens.Black, (float)p1.X, (float)p1.Y, (float)p2.X, (float)p2.Y);
+            }
+
             foreach (var p in Context.Points)
             {
                 var pt = p.CurrentValue;
                 int x = ((int)pt.X) * Zoom / 100 - ScrollX + cx;
                 int y = ((int)pt.Y) * Zoom / 100 - ScrollY + cy;
-                g.FillEllipse(Brushes.Red, x - 3, y - 3, 6, 6);
+                g.FillEllipse(Brushes.Red, x - 5, y - 5, 10, 10);
             }
         }
 
@@ -238,5 +245,60 @@ namespace StringSim.Controls
 
         public delegate void OnScrollChanged(object o);
         public event OnScrollChanged ScrollChanged;
+
+        bool msDown = false;
+
+        enum Tools
+        {
+            Move = 0,
+        }
+
+        Tools Tool = Tools.Move;
+
+        int downX;
+        int downY;
+
+        void ScrollMove(int dx,int dy)
+        {
+            _ScrollX += dx;
+            _ScrollY += dy;
+            Invalidate();
+            ScrollChanged?.Invoke(this);
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            msDown = true;
+            downX = e.X;
+            downY = e.Y;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (!msDown) return;
+            int x = e.X - downX;
+            int y = e.Y - downY;
+            downX = e.X;
+            downY = e.Y;
+            if(Tool==Tools.Move)
+            {
+                ScrollMove(-x, -y);
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            msDown = false;
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            msDown = false;
+        }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            msDown = false;
+        }
     }
 }
