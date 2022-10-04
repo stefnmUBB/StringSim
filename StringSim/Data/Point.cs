@@ -13,7 +13,9 @@ namespace StringSim.Data
         public Math.Point PreviousValue { get; set; }
         public Vector Velocity { get; set; } = Vector.Null;
 
-        public bool Fixed { get; set; } = false;        
+        public bool Fixed { get; set; } = false;
 
+        public static implicit operator System.Drawing.PointF(Point p)
+            => new System.Drawing.PointF((float)p.CurrentValue.X, (float)p.CurrentValue.Y);
     }
 }

@@ -16,5 +16,10 @@ namespace StringSim
         {
             InitializeComponent();
         }
+
+        private void Scene_ScrollChanged(object o)
+        {
+            PosLabel.Text = $"X={Scene.ScrollX}, Y={Scene.ScrollY}";
+        }
     }
 }
