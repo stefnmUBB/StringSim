@@ -110,8 +110,8 @@ namespace StringSim.Controls
                 if (p.Fixed)
                     brush = Brushes.Red;
                 var pt = p.CurrentValue;
-                int x = ((int)pt.X) * Zoom / 100 - ScrollX + cx;
-                int y = ((int)pt.Y) * Zoom / 100 - ScrollY + cy;
+                float x = ((float)pt.X) * Zoom / 100 - ScrollX + cx;
+                float y = ((float)pt.Y) * Zoom / 100 - ScrollY + cy;
                 g.FillEllipse(brush, x - 5, y - 5, 10, 10);
             }
         }

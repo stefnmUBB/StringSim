@@ -34,7 +34,7 @@ namespace StringSim.Data
                 }
             }
 
-            for (int i = 0; i < 20; i++) 
+            for (int i = 0; i < 1000; i++) 
             {
                 foreach (var s in Segments)
                 {
