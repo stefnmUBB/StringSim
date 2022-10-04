@@ -70,7 +70,7 @@
             this.Scene.ScrollX = 0;
             this.Scene.ScrollY = 0;
             this.Scene.Size = new System.Drawing.Size(800, 426);
-            this.Scene.TabIndex = 0;            
+            this.Scene.TabIndex = 0;
             this.Scene.ScrollChanged += new StringSim.Controls.Scene.OnScrollChanged(this.Scene_ScrollChanged);
             // 
             // MainForm
@@ -80,9 +80,13 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.Scene);
             this.Controls.Add(this.AppMenu);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.AppMenu;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MainForm_PreviewKeyDown);
             this.AppMenu.ResumeLayout(false);
             this.AppMenu.PerformLayout();
             this.ResumeLayout(false);

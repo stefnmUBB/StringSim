@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StringSim.Math;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,17 +20,21 @@ namespace StringSim.Data
         {
             foreach(var p in Points)
             {
-                var tmp_val = p.CurrentValue;
-                p.CurrentValue += p.CurrentValue - p.PreviousValue;
-                foreach(var f in Forces)
+                if (!p.Fixed)
                 {
-                    p.Velocity += Delta * f.Vector;
-                    p.CurrentValue += Delta * p.Velocity;
+                    var tmp_val = p.CurrentValue;                
+                    p.CurrentValue += p.CurrentValue - p.PreviousValue;
+                    /*foreach (var f in Forces)
+                    {                        
+                        p.Velocity += Delta * f.Vector;
+                        p.CurrentValue += Delta * p.Velocity;                        
+                    }*/
+                    p.CurrentValue += new Vector(0, 1) * 9.8 * Delta * Delta;
+                    p.PreviousValue = tmp_val;
                 }
-                p.PreviousValue = tmp_val;
             }
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++) 
             {
                 foreach (var s in Segments)
                 {
@@ -47,5 +52,7 @@ namespace StringSim.Data
                 }
             }
         }
+
+        public static Force Gravity = new Force(0, 9.8);
     }
 }

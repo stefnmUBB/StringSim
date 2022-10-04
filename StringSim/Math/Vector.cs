@@ -18,7 +18,7 @@ namespace StringSim.Math
 
         public static Vector operator + (Vector u, Vector v) => new Vector(u.X + v.X, u.Y + v.Y);
         public static Vector operator - (Vector u, Vector v) => new Vector(u.X - v.X, u.Y - v.Y);
-        public static Vector operator - (Vector u) => new Vector(-u.X, u.Y);
+        public static Vector operator -(Vector u) => new Vector(-u.X, -u.Y);
         public static Vector operator *(double a, Vector u) => new Vector(a * u.X, a * u.Y);
         public static Vector operator *(Vector u, double a) => new Vector(a * u.X, a * u.Y);
         public double LengthSquared { get => X * X + Y * Y; }

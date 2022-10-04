@@ -9,6 +9,11 @@ namespace StringSim.Data
 {
     internal class Point
     {
+        public Point(double x = 0, double y = 0)
+        {
+            CurrentValue = new Math.Point(x, y);
+            PreviousValue = new Math.Point(x, y);
+        }
         public Math.Point CurrentValue { get; set; }
         public Math.Point PreviousValue { get; set; }
         public Vector Velocity { get; set; } = Vector.Null;

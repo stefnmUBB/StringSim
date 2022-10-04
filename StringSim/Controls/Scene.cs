@@ -116,6 +116,11 @@ namespace StringSim.Controls
             }
         }
 
+        public void StartSimulation()
+        {
+            SimTimer.Enabled = true;
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             int cx = Width / 2;
@@ -189,8 +194,8 @@ namespace StringSim.Controls
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             e.Graphics.Clear(BackColor);
-            e.Graphics.DrawLine(Pens.Black, 0, 0, Width - 1, Height - 1);
-            e.Graphics.DrawLine(Pens.Black, 0, Height - 1, Width - 1, 0);
+            //e.Graphics.DrawLine(Pens.Black, 0, 0, Width - 1, Height - 1);
+            //e.Graphics.DrawLine(Pens.Black, 0, Height - 1, Width - 1, 0);
         }
         protected override void OnResize(EventArgs e)
         {
@@ -301,6 +306,12 @@ namespace StringSim.Controls
         protected override void OnMouseLeave(EventArgs e)
         {
             msDown = false;
+        }
+
+        private void SimTimer_Tick(object sender, EventArgs e)
+        {
+            Context.SimulateFrame();
+            Invalidate();
         }
 
         protected override void OnMouseEnter(EventArgs e)

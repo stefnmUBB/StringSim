@@ -28,7 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.SimTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // SimTimer
+            // 
+            this.SimTimer.Interval = 50;
+            this.SimTimer.Tick += new System.EventHandler(this.SimTimer_Tick);
             // 
             // Scene
             // 
@@ -42,5 +49,7 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer SimTimer;
     }
 }
