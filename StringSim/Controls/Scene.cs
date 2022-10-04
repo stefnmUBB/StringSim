@@ -30,12 +30,25 @@ namespace StringSim.Controls
 
         public int Zoom
         {
-            get => _Zoom;
-            set
-            {
-                _Zoom = Math.Utils.Clamp(value, 5, 1000);
-                Invalidate();
-            }
+            get => _Zoom; private set => _Zoom = value;
+        }
+
+        public void IncZoom()
+        {
+            if (Zoom >= 250) Zoom += 25;
+            else if (Zoom >= 50) Zoom += 5;
+            else Zoom++;
+            Zoom = Math.Utils.Clamp(Zoom, 5, 1000);
+            Invalidate();
+        }
+
+        public void DecZoom()
+        {
+            if (Zoom > 250) Zoom -= 25;
+            else if (Zoom > 50) Zoom -= 5;
+            else Zoom--;
+            Zoom = Math.Utils.Clamp(Zoom, 5, 1000);
+            Invalidate();
         }
 
         int _ScrollX = 0, _ScrollY = 0;
@@ -62,14 +75,14 @@ namespace StringSim.Controls
             }
         }
 
-        void DrawHorizontalGridLine(Graphics g, int y)
+        void DrawHorizontalGridLine(Graphics g, int y, int transparency = 255)
         {
-            g.DrawLine(Pens.Gray, 0, y, Width - 1, y);
+            g.DrawLine(new Pen(new SolidBrush(Color.FromArgb(transparency, Color.Black))), 0, y, Width - 1, y);
         }
 
-        void DrawVerticalGridLine(Graphics g, int x)
+        void DrawVerticalGridLine(Graphics g, int x, int transparency = 255)
         {
-            g.DrawLine(Pens.Gray, x, 0, x, Height-1);
+            g.DrawLine(new Pen(new SolidBrush(Color.FromArgb(transparency, Color.Black))), x, 0, x, Height - 1);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -79,35 +92,66 @@ namespace StringSim.Controls
 
             int gy = -ScrollY + cy;
 
-            for (int y = gy; y < Height; y += Zoom) 
+            for (int y = gy; y < Height; y++) 
             {
-                DrawHorizontalGridLine(e.Graphics, y);
+                if ((y - gy) % _Zoom == 0)
+                    DrawHorizontalGridLine(e.Graphics, y);
+                else if (_Zoom >= 50 && (y - gy) % (_Zoom / 5) == 0) 
+                    DrawHorizontalGridLine(e.Graphics, y, 128);
+                else if (_Zoom >= 250 && (y - gy) % (_Zoom / 25) == 0)
+                    DrawHorizontalGridLine(e.Graphics, y, 64);
             }
 
-            for (int y = gy; y >= 0; y -= Zoom) 
+            for (int y = gy; y >= 0; y--) 
             {
-                DrawHorizontalGridLine(e.Graphics, y);
+                if ((gy - y) % _Zoom == 0)
+                    DrawHorizontalGridLine(e.Graphics, y);
+                else if (_Zoom >= 50 && (gy - y) % (_Zoom / 5) == 0) 
+                    DrawHorizontalGridLine(e.Graphics, y, 128);
+                else if (_Zoom >= 250 && (y - gy) % (_Zoom / 25) == 0)
+                    DrawHorizontalGridLine(e.Graphics, y, 64);
             }
 
             int gx = -ScrollX + cx;
 
-            for(int x=gx;x<Width;x+=Zoom)
+            for (int x = gx; x < Width; x++) 
             {
-                DrawVerticalGridLine(e.Graphics, x);
+                if ((gx - x) % _Zoom == 0)
+                    DrawVerticalGridLine(e.Graphics, x);
+                else if (_Zoom >= 50 && (gx - x) % (_Zoom / 5) == 0)
+                    DrawVerticalGridLine(e.Graphics, x, 128);
+                else if (_Zoom >= 250 && (gx - x) % (_Zoom / 25) == 0)
+                    DrawVerticalGridLine(e.Graphics, x, 64);
+
             }
 
-            for (int x = gx; x >= 0; x -= Zoom) 
+            for (int x = gx; x >= 0; x--) 
             {
-                DrawVerticalGridLine(e.Graphics, x);
+                if ((gx - x) % _Zoom == 0)
+                    DrawVerticalGridLine(e.Graphics, x);
+                else if (_Zoom >= 50 && (gx - x) % (_Zoom / 5) == 0)
+                    DrawVerticalGridLine(e.Graphics, x, 128);
+                else if (_Zoom >= 250 && (gx - x) % (_Zoom / 25) == 0)
+                    DrawVerticalGridLine(e.Graphics, x, 64);
             }
 
 
+            e.Graphics.DrawString($"{ScrollX}, {ScrollY}", Font, Brushes.Black, 0, 0);
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            base.OnMouseWheel(e);            
-            Zoom += e.Delta / 120;
+            base.OnMouseWheel(e);
+            int c = e.Delta / 120;
+            if(c<0)
+            {
+                for (; c != 0; c++) DecZoom();
+            }
+            else if(c>0)
+            {
+                for (; c != 0; c--) IncZoom();
+            }            
+            this.ParentForm.Text = e.Delta.ToString() + " " + Zoom.ToString();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
