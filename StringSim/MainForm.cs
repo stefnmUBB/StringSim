@@ -18,14 +18,15 @@ namespace StringSim
         {
             InitializeComponent();
             Scene.Context = SimulationContext;
-            for(int i=0;i<360;i+=30)
+            for(int i=0;i<360;i+=15)
             {
-                double X = 100 * System.Math.Cos(2 * System.Math.PI * i / 360);
-                double Y = 100 * System.Math.Sin(2 * System.Math.PI * i / 360);
+                double X = 130 * System.Math.Cos(2 * System.Math.PI * (i+-90-7.5) / 360);
+                double Y = 100 * System.Math.Sin(2 * System.Math.PI * (i+-90+7.5) / 360);
                 SimulationContext.Points.Add(new Data.Point(X, Y));
             }
             SimulationContext.Points[0].Fixed = true;
             SimulationContext.Points.Last().Fixed = true;
+            SimulationContext.Points[SimulationContext.Points.Count / 2].Fixed = true;
             for (int i = 0; i < SimulationContext.Points.Count - 1; i++) 
             {
                 SimulationContext.Segments.Add(new Segment(

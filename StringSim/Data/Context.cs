@@ -24,11 +24,11 @@ namespace StringSim.Data
                 {
                     var tmp_val = p.CurrentValue;                
                     p.CurrentValue += p.CurrentValue - p.PreviousValue;
-                    /*foreach (var f in Forces)
+                    foreach (var f in Forces)
                     {                        
                         p.Velocity += Delta * f.Vector;
                         p.CurrentValue += Delta * p.Velocity;                        
-                    }*/
+                    }
                     p.CurrentValue += new Vector(0, 1) * 9.8 * Delta * Delta;
                     p.PreviousValue = tmp_val;
                 }
