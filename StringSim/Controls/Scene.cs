@@ -85,12 +85,29 @@ namespace StringSim.Controls
             g.DrawLine(new Pen(new SolidBrush(Color.FromArgb(transparency, Color.Black))), x, 0, x, Height - 1);
         }
 
+
+        void DrawPoints(Graphics g)
+        {            
+            if (Context == null) return;
+
+            int cx = Width / 2;
+            int cy = Height / 2;
+
+            foreach (var p in Context.Points)
+            {
+                var pt = p.CurrentValue;
+                int x = ((int)pt.X) * Zoom / 100 - ScrollX + cx;
+                int y = ((int)pt.Y) * Zoom / 100 - ScrollY + cy;
+                g.FillEllipse(Brushes.Red, x - 3, y - 3, 6, 6);
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             int cx = Width / 2;
             int cy = Height / 2;
 
-            int gy = -ScrollY + cy;
+            int gy = ScrollY / Zoom * Zoom/100 - ScrollY + cy;
 
             for (int y = gy; y < Height; y++) 
             {
@@ -112,7 +129,7 @@ namespace StringSim.Controls
                     DrawHorizontalGridLine(e.Graphics, y, 64);
             }
 
-            int gx = -ScrollX + cx;
+            int gx = ScrollX / Zoom * Zoom / 100 - ScrollX + cx;
 
             for (int x = gx; x < Width; x++) 
             {
@@ -135,6 +152,7 @@ namespace StringSim.Controls
                     DrawVerticalGridLine(e.Graphics, x, 64);
             }
 
+            DrawPoints(e.Graphics);
 
             e.Graphics.DrawString($"{ScrollX}, {ScrollY}", Font, Brushes.Black, 0, 0);
         }
