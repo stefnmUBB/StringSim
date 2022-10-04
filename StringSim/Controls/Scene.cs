@@ -97,15 +97,22 @@ namespace StringSim.Controls
             {
                 var p1 = s.Heads[0].CurrentValue;
                 var p2 = s.Heads[1].CurrentValue;
-                g.DrawLine(Pens.Black, (float)p1.X, (float)p1.Y, (float)p2.X, (float)p2.Y);
+                g.DrawLine(Pens.Black, 
+                    (float)p1.X * Zoom / 100 - ScrollX + cx, 
+                    (float)p1.Y * Zoom / 100 - ScrollY + cy,
+                    (float)p2.X * Zoom / 100 - ScrollX + cx, 
+                    (float)p2.Y * Zoom / 100 - ScrollY + cy);
             }
 
             foreach (var p in Context.Points)
             {
+                Brush brush = Brushes.Blue;
+                if (p.Fixed)
+                    brush = Brushes.Red;
                 var pt = p.CurrentValue;
                 int x = ((int)pt.X) * Zoom / 100 - ScrollX + cx;
                 int y = ((int)pt.Y) * Zoom / 100 - ScrollY + cy;
-                g.FillEllipse(Brushes.Red, x - 5, y - 5, 10, 10);
+                g.FillEllipse(brush, x - 5, y - 5, 10, 10);
             }
         }
 

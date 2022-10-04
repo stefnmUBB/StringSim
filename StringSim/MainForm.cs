@@ -26,6 +26,19 @@ namespace StringSim
                     CurrentValue = new Math.Point(X, Y)
                 });
             }
+            SimulationContext.Points[0].Fixed = true;
+            for (int i = 0; i < SimulationContext.Points.Count - 1; i++) 
+            {
+                SimulationContext.Segments.Add(new Segment()
+                {
+                    Heads = new Data.Point[2] 
+                    {
+                        SimulationContext.Points[i],
+                        SimulationContext.Points[i+1]
+                    }
+                }
+                );
+            }
         }
 
         Context SimulationContext = new Context();
